@@ -39,8 +39,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	secondsFromMidnight := float64(now.Sub(midnight).Seconds())
 	dotbeatTime := math.Mod((secondsFromMidnight / 86.4), 1000)
 
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("d%d.%s\n@%0.2f\n", midnight.Day(), midnight.Month().String(), dotbeatTime))
-
 	op := &ebiten.DrawImageOptions{}
 	screen.DrawImage(clockCircle, op)
 
@@ -62,6 +60,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	op.GeoM.Translate(float64(screen.Bounds().Dx()/2), float64(screen.Bounds().Dy()/2))
 	screen.DrawImage(clockHand, op)
 
+	op = &ebiten.DrawImageOptions{}
+	handRotation *= 100
+	op.GeoM.Rotate(handRotation)
+	op.GeoM.Scale(0.40, 0.40)
+	op.GeoM.Translate(float64(screen.Bounds().Dx()/2), float64(screen.Bounds().Dy()/2))
+	screen.DrawImage(clockHand, op)
+
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("d%d.%s\n@%0.2f\n", midnight.Day(), midnight.Month().String(), dotbeatTime))
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
