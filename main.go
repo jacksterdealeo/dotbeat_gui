@@ -44,37 +44,43 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	// "Hour Hand"
 	op = &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(-float64(clockHand.Bounds().Dx())/2, -float64(2))
 	handRotation = dotbeatTime*(0.0062831853) + (3.1415926536)
-	op.GeoM.Rotate(handRotation)
 	op.GeoM.Scale(0.25, 0.25)
+	op.GeoM.Rotate(handRotation)
 	op.GeoM.Translate(float64(screen.Bounds().Dx()/2), float64(screen.Bounds().Dy()/2))
 
 	// degrees = radians * (180/pi)
 	// radians = degrees * (pi/180)
-	//screen.DrawImage(clockHand, op)
+	screen.DrawImage(clockHand, op)
 
 	// "Minute Hand"
 	op = &ebiten.DrawImageOptions{}
-	handRotation *= 100
+	op.GeoM.Translate(-float64(clockHand.Bounds().Dx())/2, -float64(2))
+	handRotation = (dotbeatTime*100)*(0.0062831853) + (3.1415926536)
+	op.GeoM.Scale(0.20, 0.40)
 	op.GeoM.Rotate(handRotation)
-	op.GeoM.Scale(0.5, 0.40)
 	op.GeoM.Translate(float64(screen.Bounds().Dx()/2), float64(screen.Bounds().Dy()/2))
-	//screen.DrawImage(clockHand, op)
-
-	// TODO: pin the hands directly to the center.
+	screen.DrawImage(clockHand, op)
 
 	// "Second Hand"
 	op = &ebiten.DrawImageOptions{}
-	handRotation *= 100
+
+	// Move the image's center to the screen's upper-left corner.
+	// This is a preparation for rotating. When geometry matrices are applied,
+	// the origin point is the upper-left corner.
+	op.GeoM.Translate(-float64(clockHand.Bounds().Dx())/2, -float64(40))
+
+	handRotation = (dotbeatTime*10000)*(0.0062831853) + (3.1415926536)
+	op.GeoM.Scale(0.20, 0.50)
 	op.GeoM.Rotate(handRotation)
-	op.GeoM.Scale(0.40, 0.40)
-	op.GeoM.Translate(float64(screen.Bounds().Dx()/2)+4, float64(screen.Bounds().Dy()/2))
+	op.GeoM.Translate(float64(screen.Bounds().Dx()/2), float64(screen.Bounds().Dy()/2))
 	screen.DrawImage(clockHand, op)
 
 	dotbeatString := fmt.Sprintf("d%d.%s\n@%0.2f\n", midnight.Day(), midnight.Month().String(), dotbeatTime)
-	screenDebugScreen := fmt.Sprintf("X: %d, Y: %d\n", screen.Bounds().Dx(), screen.Bounds().Dy())
+	// screenDebugScreen := fmt.Sprintf("X: %d, Y: %d\n", screen.Bounds().Dx(), screen.Bounds().Dy())
 	ebitenutil.DebugPrint(screen,
-		(dotbeatString + screenDebugScreen),
+		(dotbeatString),
 	)
 }
 
