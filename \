@@ -42,7 +42,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	screen.DrawImage(clockCircle, op)
 
-	// "Hour Hand"
 	op = &ebiten.DrawImageOptions{}
 	handRotation = dotbeatTime*(0.0062831853) + (3.1415926536)
 	op.GeoM.Rotate(handRotation)
@@ -51,31 +50,24 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	// degrees = radians * (180/pi)
 	// radians = degrees * (pi/180)
-	//screen.DrawImage(clockHand, op)
+	screen.DrawImage(clockHand, op)
 
-	// "Minute Hand"
+	// TODO: pin the hands directly to the center.
 	op = &ebiten.DrawImageOptions{}
 	handRotation *= 100
 	op.GeoM.Rotate(handRotation)
 	op.GeoM.Scale(0.5, 0.40)
 	op.GeoM.Translate(float64(screen.Bounds().Dx()/2), float64(screen.Bounds().Dy()/2))
-	//screen.DrawImage(clockHand, op)
+	screen.DrawImage(clockHand, op)
 
-	// TODO: pin the hands directly to the center.
-
-	// "Second Hand"
 	op = &ebiten.DrawImageOptions{}
 	handRotation *= 100
 	op.GeoM.Rotate(handRotation)
 	op.GeoM.Scale(0.40, 0.40)
-	op.GeoM.Translate(float64(screen.Bounds().Dx()/2)+4, float64(screen.Bounds().Dy()/2))
+	op.GeoM.Translate(float64(screen.Bounds().Dx()/2, float64(screen.Bounds().Dy()/2-10))
 	screen.DrawImage(clockHand, op)
 
-	dotbeatString := fmt.Sprintf("d%d.%s\n@%0.2f\n", midnight.Day(), midnight.Month().String(), dotbeatTime)
-	screenDebugScreen := fmt.Sprintf("X: %d, Y: %d\n", screen.Bounds().Dx(), screen.Bounds().Dy())
-	ebitenutil.DebugPrint(screen,
-		(dotbeatString + screenDebugScreen),
-	)
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("d%d.%s\n@%0.2f\n", midnight.Day(), midnight.Month().String(), dotbeatTime))
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
