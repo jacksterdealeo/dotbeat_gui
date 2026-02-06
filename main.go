@@ -111,7 +111,7 @@ func main() {
 	}
 	clockHand = ebiten.NewImageFromImage(img_lineFile)
 
-	ebiten.SetWindowSize(640, 480)
+	ebiten.SetWindowSize(Width, Height)
 	ebiten.SetWindowTitle("Dotbeat Clock")
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	if err := ebiten.RunGame(&Game{}); err != nil {
